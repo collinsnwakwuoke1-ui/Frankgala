@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/empire-control",
+      "destination": "/admin.html"
+    }
+  ]
+}
