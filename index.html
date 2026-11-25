@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0A0E1C;--navy:#1B2547;--navy2:#2A3870;--gold:#D2B040;--red:#D7263D;--ivory:#F4F2EA;--grey:#9097AD;
---serif:"Cormorant Garamond",Georgia,serif;--sans:"Manrope",system-ui,sans-serif;--R:270px;
+--serif:"Cormorant Garamond",Georgia,serif;--sans:"Manrope",system-ui,sans-serif;--R:340px;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-behavior:smooth;scroll-padding-top:72px}
@@ -60,7 +60,7 @@ h2.big{font:500 clamp(2.2rem,6vw,4.4rem)/1.05 var(--serif);margin:16px 0 24px;ma
 .empire{background:var(--ivory);color:var(--ink)}.empire .eyebrow{color:var(--navy2)}
 .car{position:relative;height:380px;perspective:1500px;margin-top:40px;touch-action:pan-y;user-select:none}
 .ring{position:absolute;left:50%;top:50px;width:210px;height:280px;margin-left:-105px;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
-.face{position:absolute;inset:0;transform:rotateY(calc(var(--i)*60deg)) translateZ(var(--R));backface-visibility:hidden;border:1px solid var(--gold);border-radius:3px;color:var(--ivory);background:linear-gradient(160deg,var(--navy2),var(--navy));padding:20px 16px;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;font:inherit}
+.face{position:absolute;inset:0;transform:rotateY(calc(var(--i)*36deg)) translateZ(var(--R));backface-visibility:hidden;border:1px solid var(--gold);border-radius:3px;color:var(--ivory);background:linear-gradient(160deg,var(--navy2),var(--navy));padding:20px 16px;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;font:inherit}
 .face:nth-child(2n){background:linear-gradient(160deg,var(--navy),var(--ink))}
 .face:nth-child(3){background:linear-gradient(160deg,var(--gold),#8c7424);color:var(--ink)}
 .face small{font:800 .7rem var(--sans);letter-spacing:.16em;color:var(--gold)}.face:nth-child(3) small{color:var(--ink)}
@@ -246,7 +246,11 @@ var DIV=[
 {n:"New Africa International",s:"Global",d:"Conferences, international gatherings, business networking, cultural exchange and talent-focused initiatives.",p:["Conferences","Networking","Cultural exchange"],svc:"Partnership",img:"i7"},
 {n:"Frankgala Empire Football Academy",s:"Football",d:"Football development, training, talent identification, discipline and career pathways.",p:["Training","Talent identification","Career pathways"],svc:"Academy enquiry",img:"i4"},
 {n:"Frankgala School of Royalty",s:"Leadership",d:"Personal development, leadership, confidence, etiquette and professional training.",p:["Leadership","Etiquette","Professional training"],svc:"Training programme"},
-{n:"Investments and Contracts",s:"Enterprise",d:"Business investments, strategic partnerships, contracts, real estate and enterprise development.",p:["Strategic partnerships","Contracts","Real estate"],svc:"Investment",img:"i1"}];
+{n:"Investments and Contracts",s:"Enterprise",d:"Business investments, strategic partnerships, contracts and enterprise development.",p:["Strategic partnerships","Contracts","Enterprise development"],svc:"Investment",img:"i1"},
+{n:"E-commerce & Tech",s:"Digital",d:"Digital commerce, technology solutions and online business growth.",p:["Online shops and commerce","Technology solutions","Digital business growth"],svc:"General business enquiry",img:"i10"},
+{n:"Hospitality and Tourism",s:"Hospitality",d:"Hospitality experiences, tourism services and destination-focused opportunities.",p:["Hospitality services","Tourism experiences","Destination partnerships"],svc:"General business enquiry",img:"i11"},
+{n:"Service & Humanitarianism",s:"Community",d:"Community service, humanitarian initiatives and practical support for people and communities.",p:["Community outreach","Humanitarian initiatives","Impact partnerships"],svc:"Partnership",img:"i7"},
+{n:"Real Estate Consultancy",s:"Property",d:"Real estate advisory, property opportunities and support for informed property decisions.",p:["Property advisory","Real estate opportunities","Property investment guidance"],svc:"Investment",img:"i1"}];
 var PROJ=[
 {t:"Sample: Leadership programme",im:"i10",c:"Current",st:"Placeholder",d:"Example of a current initiative entry.",c1:"#2A3870",c2:"#0A0E1C"},
 {t:"Sample: Talent showcase",im:"i11",c:"Upcoming",st:"Placeholder",d:"Example of an upcoming event entry.",c1:"#D2B040",c2:"#1B2547"},
@@ -289,7 +293,7 @@ function initGL(){
  var navyM=new T.MeshPhongMaterial({color:0x1B2547,shininess:60,specular:0x445}),goldM=new T.MeshPhongMaterial({color:0xD2B040,shininess:120,specular:0xffeeaa});
  var plat=new T.Mesh(new T.CylinderGeometry(4.3,4.5,.3,72),navyM);plat.position.y=-1.9;scene.add(plat);
  var rim=new T.Mesh(new T.TorusGeometry(4.4,.05,12,96),goldM);rim.rotation.x=Math.PI/2;rim.position.y=-1.74;scene.add(rim);
- for(var i=0;i<6;i++){var a=i/6*Math.PI*2,b=new T.Mesh(new T.BoxGeometry(.8,1,.8),i%2?navyM:goldM);b.position.set(Math.sin(a)*3.2,-1.75,Math.cos(a)*3.2);b.scale.y=.001;b.userData.a=a;scene.add(b);pil.push(b)}
+ for(var i=0;i<10;i++){var a=i/10*Math.PI*2,b=new T.Mesh(new T.BoxGeometry(.8,1,.8),i%2?navyM:goldM);b.position.set(Math.sin(a)*3.2,-1.75,Math.cos(a)*3.2);b.scale.y=.001;b.userData.a=a;scene.add(b);pil.push(b)}
  /* medallion */
  emb=new T.Group();scene.add(emb);
  var tex=new T.TextureLoader().load(LOGO,function(){buildParticles(tex.image)});tex.encoding=T.sRGBEncoding;
@@ -386,9 +390,9 @@ $("#dx").onclick=function(){dlg.close()};dlg.onclose=function(){last&&last.focus
 
 /* 3D division ring */
 var ring=$("#ring"),ang2=0,idxD=0,panel=$("#panel");
-DIV.forEach(function(d,i){var b=document.createElement("button");b.className="face";b.style.setProperty("--i",i);b.innerHTML="<small>"+d.s.toUpperCase()+"</small><b>"+d.n+"</b><span>Tap to explore</span>";if(d.img){b.classList.add("im");b.style.backgroundImage="linear-gradient(180deg,rgba(10,14,28,.2),rgba(10,14,28,.9)),url("+IMG[d.img]+")"}b.onclick=function(){go(((i-idxD+9)%6)-3)};ring.appendChild(b)});
-function setR(){document.documentElement.style.setProperty("--R",innerWidth<600?"200px":"270px")}setR();addEventListener("resize",setR);
-function go(step){ang2+=step*60;idxD=(((idxD+step)%6)+6)%6;ring.style.transform="translateZ(calc(var(--R) * -1)) rotateY("+(-ang2)+"deg)";show(idxD)}
+DIV.forEach(function(d,i){var b=document.createElement("button");b.className="face";b.style.setProperty("--i",i);b.innerHTML="<small>"+d.s.toUpperCase()+"</small><b>"+d.n+"</b><span>Tap to explore</span>";if(d.img){b.classList.add("im");b.style.backgroundImage="linear-gradient(180deg,rgba(10,14,28,.2),rgba(10,14,28,.9)),url("+IMG[d.img]+")"}b.onclick=function(){go(((i-idxD+15)%10)-5)};ring.appendChild(b)});
+function setR(){document.documentElement.style.setProperty("--R",innerWidth<600?"280px":"340px")}setR();addEventListener("resize",setR);
+function go(step){ang2+=step*36;idxD=(((idxD+step)%10)+10)%10;ring.style.transform="translateZ(calc(var(--R) * -1)) rotateY("+(-ang2)+"deg)";show(idxD)}
 function show(i){var d=DIV[i];panel.className="panel r in"+(d.img?" has":"");
  panel.innerHTML=(d.img?"<div><img class='pimg' alt='' src='"+IMG[d.img]+"'><p class='pcap'>Placeholder photo</p></div>":"")+"<div><h3>"+d.n+"</h3><p style='max-width:56ch;margin-bottom:16px'>"+d.d+"</p><ul>"+d.p.map(function(x){return"<li>"+x+"</li>"}).join("")+"</ul><div class='cta'><a class='btn' href='#contact' id='enq'>Make an Enquiry</a></div></div>";$("#enq").onclick=function(){buildForm($("#form"),d.svc,"c")}}
 ring.style.transform="translateZ(calc(var(--R) * -1))";show(0);
