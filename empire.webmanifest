@@ -1,0 +1,20 @@
+{
+  "id": "/empire-control",
+  "name": "Frank Gala Empire Control",
+  "short_name": "Empire Control",
+  "description": "Admin workspace for Frank Gala Empire",
+  "start_url": "/empire-control",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0e1c",
+  "theme_color": "#0a0e1c",
+  "icons": [
+    {
+      "src": "/empire-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
