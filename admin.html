@@ -179,7 +179,9 @@ function fieldHtml(key,label,value,type="text"){const id="cms-"+key;return type=
 function renderContentEditor(key,data){
  const host=$("content-editor");host.innerHTML="";
  if(key==="dashboard"){host.innerHTML='<div class="actions"><button class="btn" type="button" id="dash-open-programs">Manage programs</button><button class="btn ghost" type="button" id="dash-open-pillars">Edit 10 pillars</button></div>'; $("dash-open-programs").onclick=()=>setSection("programs");$("dash-open-pillars").onclick=()=>setSection("pillars");return}
- if(key==="enquiries"){loadEnquiries();return}\n if(key==="media"){loadMediaLibrary();return}\n if(key==="projects"){loadProjectEditor(data);return}
+ if(key==="enquiries"){loadEnquiries();return}
+ if(key==="media"){loadMediaLibrary();return}
+ if(key==="projects"){loadProjectEditor(data);return}
  if(key==="pillars"){
   const arr=Array.isArray(data.items)?data.items: pillarDefaults.map((name,i)=>({name,description:"",image:"",order:i}));
   host.innerHTML='<p class="muted">Edit all ten pillar names, descriptions and images. Upload a JPG, PNG or WebP, or paste an image URL.</p><form id="cms-form" class="grid"></form><div class="actions"><button class="btn" id="cms-save" type="button">Save 10 pillars</button></div><div id="cms-status" class="status" role="status"></div>';
