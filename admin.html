@@ -95,6 +95,20 @@ body{background:#0a0e1c;min-height:100dvh;padding:18px}
 <div class="field full"><label class="check"><input id="published" type="checkbox"> Publish on public website</label></div>
 </div><div class="actions"><button class="btn" id="save" type="submit">Save program</button><button class="btn ghost" id="cancel" type="button">Clear form</button></div></form><div id="savestatus" class="status" role="status"></div></section>
 <section class="panel"><div class="headrow"><div><div class="kicker">Content library</div><h2>Programs</h2></div><button id="refresh" class="btn ghost">Refresh</button></div><div id="programs" class="programs"><div class="empty">Loading programs…</div></div></section>
+</section>
+<section class="panel" id="events-admin"><div class="headrow"><div><div class="kicker">Event management</div><h2 id="event-form-title">Add an event</h2></div><button id="event-refresh" class="btn ghost" type="button">Refresh events</button></div>
+<form id="eventform"><input id="eventid" type="hidden"><div class="grid">
+<div class="field"><label for="event-title">Event title *</label><input id="event-title" required maxlength="160"></div>
+<div class="field"><label for="event-slug">URL slug *</label><input id="event-slug" required maxlength="180" placeholder="event-name"></div>
+<div class="field full"><label for="event-summary">Short summary</label><input id="event-summary" maxlength="280"></div>
+<div class="field full"><label for="event-description">Event details</label><textarea id="event-description" maxlength="5000"></textarea></div>
+<div class="field"><label for="event-start">Start date and time</label><input id="event-start" type="datetime-local"></div>
+<div class="field"><label for="event-end">End date and time</label><input id="event-end" type="datetime-local"></div>
+<div class="field"><label for="event-location">Location</label><input id="event-location" maxlength="180"></div>
+<div class="field"><label for="event-image">Event image (JPG, PNG, WebP; max 10 MB)</label><input id="event-image" type="file" accept="image/jpeg,image/png,image/webp"></div>
+<div class="field"><label for="event-status">Visibility</label><select id="event-status"><option value="draft">Draft</option><option value="published">Published</option></select></div>
+</div><div class="actions"><button class="btn" id="event-save" type="submit">Save event</button><button class="btn ghost" id="event-clear" type="button">Clear form</button></div><div class="status" id="event-status-message" role="status"></div></form>
+<div class="programs" id="event-list"><div class="empty">Loading events…</div></div></section>
 </div></main></div></div>
 <div class="assistant collapsed" id="assistant"><div class="assistant-head"><div><strong>Empire AI Assistant</strong><small id="assistant-status">Guided help · AI connection pending</small></div><button class="assistant-toggle" id="assistant-toggle" aria-expanded="false" aria-label="Open assistant">+</button></div><div class="assistant-body" id="assistant-body"><div class="assistant-message" id="assistant-message"><p><strong>Welcome to Empire Control.</strong></p><p>I can guide you through the current dashboard and explain how to manage programs. Live AI responses will be enabled after an AI provider is securely connected.</p></div><div class="assistant-prompts"><button data-help="programs">Manage a program</button><button data-help="publish">How do I publish?</button><button data-help="pillars">Edit the 10 pillars</button><button data-help="ai">Connect AI assistant</button></div><form id="assistant-chat-form" class="assistant-chat"><label for="assistant-question">Ask Empire AI</label><textarea id="assistant-question" rows="2" maxlength="3000" placeholder="Ask about content, UX, or dashboard tasks…"></textarea><button class="btn" id="assistant-send" type="submit">Ask assistant</button><div class="status" id="assistant-chat-status" role="status"></div></form></div><div class="assistant-foot">Assistant actions will require your approval before publishing or major edits.</div></div>
 <script>
