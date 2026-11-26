@@ -116,7 +116,7 @@ $("programform").addEventListener("submit",async e=>{e.preventDefault();const bt
 async function deleteProgram(p){if(!confirm('Delete "'+p.title+'"? This cannot be undone.'))return;try{await api("programs?id=eq."+encodeURIComponent(p.id),{method:"DELETE"});await loadPrograms()}catch(err){message("savestatus",err.message,"error")}}
 
 const sectionInfo={
- dashboard:{title:"Dashboard",heading:"Website overview",copy:"Use the sidebar to navigate the management areas. Programs are currently connected to the live website. The other content and design controls are being connected to the site content system."},
+ dashboard:{title:"Dashboard",heading:"Website overview",copy:"Manage published website content from the sidebar. Homepage, pillars, gallery, about, design and site settings are connected to the content store. AI replies require a provider key in Vercel."},
  homepage:{title:"Homepage & Hero",heading:"Homepage content",copy:"Edit the homepage hero copy and calls to action. Saved published content is read by the public homepage."},
  pillars:{title:"10 Pillars",heading:"Pillar management",copy:"Edit all ten pillar names, descriptions and image URLs. The live 3D carousel reads the saved pillar content."},
  programs:{title:"Programs & Events",heading:"Programs & Events",copy:"Create, edit, upload images, set status, and publish programs. Published programs appear on the public website."},
@@ -130,7 +130,7 @@ const cmsSchema={
  homepage:[["eyebrow","Hero eyebrow"],["markText","Brand mark text"],["headline","Hero headline"],["lead","Hero supporting text"],["primaryCta","Primary button text"],["secondaryCta","Secondary button text"]],
  about:[["vision","Vision"],["mission","Mission"],["values","Values"],["story","About / company story"],["milestones","Milestones"]],
  design:[["gold","Gold accent (hex)"],["navy","Navy (hex)"],["ink","Background (hex)"],["ivory","Text (hex)"],["serif","Heading font family"],["sans","Body font family"]],
- settings:[["siteTitle","Site title"],["description","SEO description"],["contactEmail","Contact email"],["contactPhone","Contact phone"],["address","Office address"],["instagram","Instagram URL"],["facebook","Facebook URL"],["linkedin","LinkedIn URL"]],
+ settings:[["siteTitle","Site title"],["description","SEO description"],["contactEmail","Contact email"],["contactPhone","Contact phone"],["address","Office address"],["instagram","Instagram URL"],["facebook","Facebook URL"],["linkedin","LinkedIn URL"],["navVision","Navigation label: Vision"],["navEmpire","Navigation label: Empire"],["navProjects","Navigation label: Projects"],["navPrograms","Navigation label: Programs"],["navEvents","Navigation label: Events"],["navAbout","Navigation label: About"],["navContact","Navigation label: Contact"],["footerText","Footer text"]],
  media:[["gallery","Gallery items (one per line: label | image URL | alt text)"]]
 };
 const pillarDefaults=[
