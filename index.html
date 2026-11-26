@@ -166,13 +166,13 @@ footer{padding:48px 0;border-top:1px solid rgba(144,151,173,.4);color:var(--grey
 <div class="beats">
 <div class="beat"><span class="eyebrow">Chapter I · Foundation</span><h2>Every empire begins with a decision.</h2><p>Before there is a structure, there is a conviction: people can be developed, businesses can be built and opportunity can be created on purpose.</p></div>
 <div class="beat"><span class="eyebrow">Chapter II · Belief</span><h2>The future is built by people with vision.</h2><p>We believe the future is built by people with vision, discipline, and the courage to create.</p></div>
-<div class="beat"><span class="eyebrow">Chapter III · Pillars</span><h2>Ten pillars. One purpose.</h2><p>Events, media, international gatherings, football, leadership, investment, e-commerce and technology, hospitality, humanitarian service and real estate. Each pillar stands on its own and carries equal weight.</p></div>
+<div class="beat"><span class="eyebrow">Chapter III · Pillars</span><h2>Ten pillars. One purpose.</h2><p>Events, media, international gatherings, football, leadership, investment, information and technology, real estate, hospitality and tourism, and humanitarian service. Each pillar stands on its own and carries equal weight.</p></div>
 <div class="beat"><span class="eyebrow">Chapter IV · Structure</span><h2>Walk around it. Every side is built.</h2><p>Projects, events and partnerships rise around the pillars. From any angle, the same purpose holds.</p></div>
 <div class="beat"><span class="eyebrow">Chapter V · The Empire</span><h2>Completed, and never finished.</h2><p>The emblem rises above everything it built. An empire here is a living system of people, talent and enterprise that keeps growing across Africa and beyond.</p></div>
 </div><div class="dots" id="dots"></div></div></section>
 
 <section class="sec empire" id="empire"><div class="wrap">
-<span class="eyebrow r">The Empire · Six divisions</span>
+<span class="eyebrow r">The Empire · Ten pillars</span>
 <h2 class="big r">Turn the ring. Choose a pillar.</h2>
 <div class="car" id="car"><div class="ring" id="ring"></div></div>
 <div class="ctl"><button id="prev" aria-label="Previous division">‹</button><button id="next" aria-label="Next division">›</button></div>
@@ -379,7 +379,7 @@ function submit(el,src){
  function show(t,b){st.textContent=t;st.className="status"+(b?" bad":"")}
  if(!ENDPOINT){
   btn.disabled=true;show("Sending securely…");
-  var messageText=[o.details,o.budget?"Budget: "+o.budget:"",o.date?"Preferred date: "+o.date:""].filter(Boolean).join("\\n\\n");
+  var messageText=[o.details,o.budget?"Budget: "+o.budget:"",o.date?"Preferred date: "+o.date:""].filter(Boolean).join("\n\n");
   fetch(CMS_URL+"/rest/v1/site_enquiries",{method:"POST",headers:{"apikey":CMS_KEY,"Authorization":"Bearer "+CMS_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},body:JSON.stringify({name:o.name.trim(),email:o.email.trim(),phone:o.phone.trim(),subject:o.service||"General enquiry",message:messageText})})
   .then(function(r){if(!r.ok)throw Error("Request rejected");show("Enquiry received. The Empire team can review it in Empire Control.");el.reset()})
   .catch(function(){show("Your enquiry was not sent. Please try again later.",true)})
@@ -406,7 +406,7 @@ ring.style.transform="translateZ(calc(var(--R) * -1))";show(0);
 
 /* ===== Published site content from Empire Control ===== */
 var CMS_URL="https://bwgrvtrhnmllovafduyn.supabase.co";
-var CMS_KEY="sb_publishable_6TnYFMOfZ1g3euFs-Wv5Zw";
+var CMS_KEY="sb_publishable_6TnYFMOfZ1g3euFs-Wv5Zw_P81Gi6Fa";
 function cmsText(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function cmsImageUrl(v){if(typeof v!=="string")return"";v=v.trim();return /^(https?:\/\/|\/assets\/)[^\s"'<>]+$/i.test(v)?v:""}
 function cmsSetText(sel,value){var el=document.querySelector(sel);if(el&&typeof value==="string"&&value.trim())el.textContent=value}
