@@ -251,12 +251,7 @@ var DIV=[
 {n:"Real Estate Consultancy",s:"Property",d:"Real estate advisory, property opportunities and support for informed property decisions.",p:["Property advisory","Real estate opportunities","Property investment guidance"],svc:"Investment",img:"i14"},
 {n:"Hospitality and Tourism",s:"Hospitality",d:"Hospitality experiences, tourism services and destination-focused opportunities.",p:["Hospitality services","Tourism experiences","Destination partnerships"],svc:"General business enquiry",img:"i15"},
 {n:"Service & Humanitarianism",s:"Community",d:"Community service, humanitarian initiatives and practical support for people and communities.",p:["Community outreach","Humanitarian initiatives","Impact partnerships"],svc:"Partnership",img:"i16"}];
-var PROJ=[
-{t:"Sample: Leadership programme",im:"i10",c:"Current",st:"Placeholder",d:"Example of a current initiative entry.",c1:"#2A3870",c2:"#0A0E1C"},
-{t:"Sample: Talent showcase",im:"i11",c:"Upcoming",st:"Placeholder",d:"Example of an upcoming event entry.",c1:"#D2B040",c2:"#1B2547"},
-{t:"Sample: Completed project",im:"i9",c:"Completed",st:"Placeholder",d:"Example of a completed project entry.",c1:"#1B2547",c2:"#9097AD"},
-{t:"Sample: Partnership call",im:"i7",c:"Partnerships",st:"Placeholder",d:"Example of an open partnership opportunity.",c1:"#0A0E1C",c2:"#D7263D"},
-{t:"Sample: Featured investment",im:"i1",c:"Investments",st:"Placeholder",d:"Example of a featured investment entry.",c1:"#9097AD",c2:"#2A3870"}];
+var PROJ=[];
 var EV=[];
 
 /* wordmark + nav */
@@ -473,6 +468,10 @@ function cmsLoadPublished(){
 }
 cmsLoadPublished();
 
+function cmsLoadProjects(){fetch(CMS_URL+"/rest/v1/site_content?content_key=eq.projects&select=content_value,is_published",{headers:{apikey:CMS_KEY,Authorization:"Bearer "+CMS_KEY}}).then(function(r){if(!r.ok)throw Error("Projects unavailable");return r.json()}).then(function(rows){var data=rows[0]&&rows[0].is_published?rows[0].content_value||{}:{};var items=Array.isArray(data.items)?data.items:[];PROJ=items.filter(function(p){return p&&typeof p.title==="string"&&p.title.trim()}).map(function(p){return{t:p.title.slice(0,160),c:(p.category||"Projects").slice(0,80),st:(p.status||"Featured").slice(0,80),d:(p.description||"").slice(0,2500),image:cmsImageUrl(p.image)||""}});var categories=["All"].concat(PROJ.map(function(p){return p.c}).filter(function(c,i,a){return a.indexOf(c)===i}));chips.innerHTML="";categories.forEach(function(c){var b=document.createElement("button");b.className="chip";b.textContent=c;b.setAttribute("aria-pressed",c==="All");b.onclick=function(){chips.querySelectorAll(".chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});renderP(c)};chips.appendChild(b)});renderP("All")}).catch(function(){PROJ=[];renderP("All")})}
+cmsLoadProjects();
+
+
 $("#prev").onclick=function(){go(-1)};$("#next").onclick=function(){go(1)};
 var sx=null;$("#car").addEventListener("pointerdown",function(e){sx=e.clientX});
 addEventListener("pointerup",function(e){if(sx!==null){var dx=e.clientX-sx;if(Math.abs(dx)>50)go(dx<0?1:-1);sx=null}});
@@ -488,7 +487,7 @@ function selectP(i,scroll){var c=pgrid.children[i];if(!c)return;
  pcount.textContent=(i+1)+" / "+LP.length;
  pdet.innerHTML="<span class='tag'>"+p.c+" · "+p.st+"</span><h3>"+p.t+"</h3><p>"+p.d+"</p><div class='cta'><button class='btn' id='pmore'>Open details</button><a class='btn ghost' href='#contact'>Make an Enquiry</a></div>";
  $("#pmore").onclick=function(){openProj(p)}}
-function openProj(p){openDlg("<img class='dimg' alt='' src='"+IMG[p.im]+"'><span class='tag'>"+p.c+" · "+p.st+" · Placeholder photo</span><h3 id='dt'>"+p.t+"</h3><p>"+p.d+"</p><p class='meta' style='margin:16px 0'>Date: to be confirmed</p><a class='btn' href='#contact' onclick='document.getElementById(\"dlg\").close()'>Make an Enquiry</a>")}
+function openProj(p){var img=p.image?'<img class="dimg" alt="" src="'+cmsText(p.image)+'">':"";openDlg(img+"<span class='tag'>"+cmsText(p.c)+" · "+cmsText(p.st)+"</span><h3 id='dt'>"+cmsText(p.t)+"</h3><p>"+cmsText(p.d)+"</p><a class='btn' href='#contact' onclick='document.getElementById(\"dlg\").close()'>Make an Enquiry</a>")}
 function railFx(){var cx=pgrid.clientWidth/2+pgrid.scrollLeft,best=0,bd=1e9;
  [].forEach.call(pgrid.children,function(el,j){var d=(el.offsetLeft+el.offsetWidth/2-cx)/el.offsetWidth,ad=Math.abs(d);
   if(!rm)el.style.transform="rotateY("+(-d*22)+"deg) scale("+(1-.1*Math.min(ad,1.5))+")";
@@ -499,9 +498,8 @@ addEventListener("resize",railFx);
 $("#pprev").onclick=function(){selectP(Math.max(0,curP-1),true)};
 $("#pnext").onclick=function(){selectP(Math.min(LP.length-1,curP+1),true)};
 function renderP(f){pgrid.innerHTML="";curP=-1;LP=PROJ.filter(function(p){return f==="All"||p.c===f});
- if(!LP.length){pgrid.innerHTML="<p class='empty'>No projects in this category yet.</p>";pdet.innerHTML="";pcount.textContent="0 / 0";return}
- LP.forEach(function(p,i){var b=document.createElement("button");b.className="item";b.setAttribute("role","option");b.innerHTML="<div class='art' style='--c1:"+p.c1+";--c2:"+p.c2+";background-image:linear-gradient(180deg,transparent 45%,rgba(10,14,28,.55)),url("+IMG[p.im]+")'><span class='pb'>Placeholder photo</span></div><div class='tx'><span class='tag'>"+p.c+" · "+p.st+"</span><h3>"+p.t+"</h3><p>"+p.d+"</p></div>";
-  b.onclick=function(){if(i===curP)openProj(p);else selectP(i,true)};pgrid.appendChild(b)});
+ if(!LP.length){var empty=document.createElement("p");empty.className="empty";empty.textContent="No projects or opportunities have been published yet. Check back for updates.";pgrid.appendChild(empty);pdet.innerHTML="";pcount.textContent="0 / 0";return}
+ LP.forEach(function(p,i){var b=document.createElement("button");b.className="item";b.setAttribute("role","option");var art=document.createElement("div");art.className="art";art.style.cssText="background:linear-gradient(135deg,#1b2547,#0a0e1c)";if(p.image){var img=document.createElement("img");img.src=p.image;img.alt="";img.loading="lazy";img.style.cssText="width:100%;height:100%;object-fit:cover";art.appendChild(img)}var tx=document.createElement("div");tx.className="tx";var tag=document.createElement("span");tag.className="tag";tag.textContent=p.c+" · "+p.st;var h=document.createElement("h3");h.textContent=p.t;var d=document.createElement("p");d.textContent=p.d;tx.append(tag,h,d);b.append(art,tx);b.onclick=function(){if(i===curP)openProj(p);else selectP(i,true)};pgrid.appendChild(b)});
  pgrid.scrollLeft=0;railFx()}
 cats.forEach(function(c){var b=document.createElement("button");b.className="chip";b.textContent=c;b.setAttribute("aria-pressed",c==="All");b.onclick=function(){chips.querySelectorAll(".chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});renderP(c)};chips.appendChild(b)});
 renderP("All");
