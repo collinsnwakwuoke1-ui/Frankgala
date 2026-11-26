@@ -136,7 +136,7 @@ footer{padding:48px 0;border-top:1px solid rgba(144,151,173,.4);color:var(--grey
 .program-status{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(144,151,173,.55);padding:4px 10px;border-radius:99px;font-size:.72rem;font-weight:800;letter-spacing:.08em;white-space:nowrap}
 .program-status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--grey)}
 .program-status.live{border-color:#ff626d;color:#ff9aa1}.program-status.live::before{background:#ff626d;box-shadow:0 0 0 4px rgba(255,98,109,.13);animation:liveblink 1.4s ease-in-out infinite}
-.program-status.ongoing{border-color:#8bcf9a;color:#b7edc0}.program-status.ongoing::before{background:#8bcf9a}
+ .program-status.ongoing{border-color:#8bcf9a;color:#b7edc0}.program-status.ongoing::before{background:#8bcf9a}\n.program-status.upcoming{border-color:#8e9acb;color:#c7d1ff}.program-status.upcoming::before{background:#8e9acb}
 @keyframes liveblink{50%{opacity:.35}}
 .program-empty{padding:28px 20px;color:#dcdfea;border-left:3px solid var(--gold);background:rgba(210,176,64,.06)}
 .program-link{color:var(--gold);font-weight:800;text-decoration:none;white-space:nowrap}.program-link:hover{text-decoration:underline}
@@ -190,14 +190,14 @@ footer{padding:48px 0;border-top:1px solid rgba(144,151,173,.4);color:var(--grey
 <section class="sec programs" id="programs"><div class="wrap">
 <span class="eyebrow r">Live and ongoing programs</span>
 <h2 class="big r">What’s happening now.</h2>
-<p class="programs-intro r">Follow current Frank Gala Empire programs. Live broadcasts and active programs appear here with their schedule, location and official access link.</p>
+<p class="programs-intro r">Published live, ongoing and upcoming programs appear here with their schedule, venue and official access link. Updates from Empire Control appear on this page automatically.</p>
 <div class="program-table-wrap r">
 <table class="program-table" aria-label="Live and ongoing programs">
 <thead><tr><th scope="col">Program</th><th scope="col">Division</th><th scope="col">Schedule</th><th scope="col">Venue</th><th scope="col">Status</th><th scope="col">Access</th></tr></thead>
 <tbody id="programlist"><tr><td colspan="6"><div class="program-empty">There are no live or ongoing programs listed right now. New programs will appear here when published.</div></td></tr></tbody>
 </table>
 </div>
-<p class="program-foot">Status is updated when a program is published or changed by the Empire’s administrator.</p>
+<p class="program-foot">Program details and status are managed by the Empire’s administrator.</p>
 </div></section>
 
 <section class="sec" id="events"><div class="wrap">
@@ -430,26 +430,26 @@ cats.forEach(function(c){var b=document.createElement("button");b.className="chi
 renderP("All");
 
 /* Programs table: add verified program entries here or connect this list to the admin database. */
-var PROGRAMS=[]; /* {name,division,schedule,venue,status:"LIVE"|"ONGOING",url} */
-
-/* Render current program statuses */
+/* Programs are managed in Empire Control and loaded from Supabase */
 var programList=$("#programlist");
 function renderPrograms(){
- if(!PROGRAMS.length){
-  programList.innerHTML="<tr><td colspan='6'><div class='program-empty'>There are no live or ongoing programs listed right now. New programs will appear here when published.</div></td></tr>";
-  return;
- }
- programList.innerHTML="";
- PROGRAMS.filter(function(p){return p.status==="LIVE"||p.status==="ONGOING"}).forEach(function(p){
-  var tr=document.createElement("tr"),live=p.status==="LIVE";
-  [p.name,p.division,p.schedule,p.venue].forEach(function(v){var td=document.createElement("td");td.textContent=v||"To be announced";tr.appendChild(td)});
-  var st=document.createElement("td"),badge=document.createElement("span");badge.className="program-status "+(live?"live":"ongoing");badge.textContent=p.status;st.appendChild(badge);tr.appendChild(st);
-  var ac=document.createElement("td");
-  if(p.url){var a=document.createElement("a");a.className="program-link";a.href=p.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=live?"Watch live":"Program details";ac.appendChild(a)}
-  else{ac.textContent="Details soon";ac.className="meta"}
-  tr.appendChild(ac);programList.appendChild(tr);
- });
- if(!programList.children.length)programList.innerHTML="<tr><td colspan='6'><div class='program-empty'>No live or ongoing programs at the moment. Check the upcoming events section for what’s next.</div></td></tr>";
+ programList.innerHTML="<tr><td colspan='6'><div class='program-empty'>Loading published programs…</div></td></tr>";
+ fetch("https://bwgrvtrhnmllovafduyn.supabase.co/rest/v1/programs?select=title,division,schedule,venue,status,access_url,sort_order&is_published=eq.true&status=neq.COMPLETED&order=sort_order.asc,created_at.desc",{headers:{"apikey":"sb_publishable_6TnYFMOfZ1g3euFs-Wv5Zw_P81Gi6Fa"}})
+ .then(function(res){if(!res.ok)throw Error("Unable to load programs");return res.json()})
+ .then(function(items){
+  programList.innerHTML="";
+  if(!items.length){programList.innerHTML="<tr><td colspan='6'><div class='program-empty'>No live, ongoing or upcoming programs have been published. Check back for updates.</div></td></tr>";return}
+  items.forEach(function(p){
+   var tr=document.createElement("tr"),live=p.status==="LIVE",ongoing=p.status==="ONGOING";
+   [p.title,p.division,p.schedule,p.venue].forEach(function(v){var td=document.createElement("td");td.textContent=v||"To be announced";tr.appendChild(td)});
+   var st=document.createElement("td"),badge=document.createElement("span");badge.className="program-status "+(live?"live":ongoing?"ongoing":"upcoming");badge.textContent=p.status;st.appendChild(badge);tr.appendChild(st);
+   var ac=document.createElement("td");
+   if(p.access_url){var a=document.createElement("a");a.className="program-link";a.href=p.access_url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=live?"Watch live":ongoing?"Program details":"More information";ac.appendChild(a)}
+   else{ac.textContent="Details soon";ac.className="meta"}
+   tr.appendChild(ac);programList.appendChild(tr);
+  });
+ })
+ .catch(function(){programList.innerHTML="<tr><td colspan='6'><div class='program-empty'>Programs are temporarily unavailable. Please check again shortly.</div></td></tr>"});
 }
 renderPrograms();
 
