@@ -521,7 +521,7 @@ Promise.all([
 var programList=$("#programlist");
 function renderPrograms(){
  programList.innerHTML="<tr><td colspan='6'><div class='program-empty'>Loading published programs…</div></td></tr>";
- fetch("https://bwgrvtrhnmllovafduyn.supabase.co/rest/v1/programs?select=title,division,schedule,venue,status,access_url,sort_order&is_published=eq.true&status=neq.COMPLETED&order=sort_order.asc,created_at.desc",{headers:{"apikey":"sb_publishable_6TnYFMOfZ1g3euFs-Wv5Zw_P81Gi6Fa"}})
+ fetch("https://bwgrvtrhnmllovafduyn.supabase.co/rest/v1/programs?select=id,title,division,schedule,venue,status,access_url,sort_order&is_published=eq.true&status=neq.COMPLETED&order=sort_order.asc,created_at.desc",{headers:{"apikey":"sb_publishable_6TnYFMOfZ1g3euFs-Wv5Zw_P81Gi6Fa"}})
  .then(function(res){if(!res.ok)throw Error("Unable to load programs");return res.json()})
  .then(function(items){
   programList.innerHTML="";
@@ -534,6 +534,17 @@ function renderPrograms(){
    if(p.access_url){var a=document.createElement("a");a.className="program-link";a.href=p.access_url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=live?"Watch live":ongoing?"Program details":"More information";ac.appendChild(a)}
    else{ac.textContent="Details soon";ac.className="meta"}
    tr.appendChild(ac);programList.appendChild(tr);
+   if(live||ongoing){
+    var updatesRow=document.createElement("tr"),updatesCell=document.createElement("td");updatesCell.colSpan=6;
+    var updatesWrap=document.createElement("div");updatesWrap.style.cssText="display:flex;gap:12px;flex-wrap:wrap;padding:12px 4px;align-items:flex-start";
+    var updatesLabel=document.createElement("p");updatesLabel.textContent="Live photo updates";updatesLabel.className="meta";updatesLabel.style.cssText="width:100%;margin:0 0 4px";updatesWrap.appendChild(updatesLabel);
+    var loading=document.createElement("span");loading.textContent="Loading latest photos…";loading.className="meta";updatesWrap.appendChild(loading);updatesCell.appendChild(updatesWrap);updatesRow.appendChild(updatesCell);programList.appendChild(updatesRow);
+    fetch(CMS_URL+"/rest/v1/program_updates?select=id,caption,image_path,created_at&program_id=eq."+encodeURIComponent(p.id)+"&is_published=eq.true&order=created_at.desc",{headers:{apikey:CMS_KEY,Authorization:"Bearer "+CMS_KEY}})
+    .then(function(r){if(!r.ok)throw Error("Live updates unavailable");return r.json()})
+    .then(function(updates){updatesWrap.innerHTML="";if(!updates.length){var empty=document.createElement("span");empty.textContent="Photos from this ongoing program will appear here.";empty.className="meta";updatesWrap.appendChild(empty);return}
+     updates.forEach(function(up){var card=document.createElement("figure");card.style.cssText="margin:0;width:min(220px,42vw)";var im=document.createElement("img");im.src=up.image_path;im.alt=up.caption||p.title+" live update";im.loading="lazy";im.style.cssText="display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px";var cap=document.createElement("figcaption");cap.textContent=up.caption||"Live program update";cap.className="meta";cap.style.cssText="margin-top:6px";card.append(im,cap);updatesWrap.appendChild(card)})
+    }).catch(function(){updatesWrap.innerHTML="";var unavailable=document.createElement("span");unavailable.textContent="Live photos are temporarily unavailable.";unavailable.className="meta";updatesWrap.appendChild(unavailable)});
+   }
   });
  })
  .catch(function(){programList.innerHTML="<tr><td colspan='6'><div class='program-empty'>Programs are temporarily unavailable. Please check again shortly.</div></td></tr>"});
