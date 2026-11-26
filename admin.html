@@ -237,7 +237,7 @@ const helpAnswers={
  programs:"Open Programs & Events in the sidebar. Use Add a program to enter its title, pillar, schedule, venue, status, link, description, and image. Save as a draft first, then check Publish on public website when ready.",
  publish:"Open Programs & Events, edit the item, tick Publish on public website, and save. The public Programs section loads published items from the database. Unpublish by clearing that checkbox and saving.",
  pillars:"Choose 10 Pillars in the sidebar. Edit names and descriptions, paste an image URL or upload a JPG, PNG or WebP, then save. Published pillar content is loaded by the live carousel.",
- ai:"Live AI requires a secure server-side AI provider connection. No API key is configured in this dashboard, so this assistant currently provides guided help only. Never paste a secret API key into a public page.",
+ ai:"The AI chat endpoint is installed, but no provider key is configured yet. In Vercel → frankgala project → Settings → Environment Variables, add AI_PROVIDER_API_KEY with your provider secret for Production, then redeploy. Optionally set AI_MODEL and AI_PROVIDER_BASE_URL for a compatible provider. Never paste the secret into this chat or website fields.",
  default:"Select a section from the sidebar. Homepage, pillars, gallery, about, design, settings and enquiries now have CMS controls. Save content to publish it to the live website."
 };
 $("assistant-body").addEventListener("click",e=>{const b=e.target.closest("button[data-help]");if(!b)return;const p=document.createElement("p");p.textContent=helpAnswers[b.dataset.help]||helpAnswers.default;$("assistant-message").replaceChildren(p);});
