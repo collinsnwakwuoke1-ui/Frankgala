@@ -257,9 +257,7 @@ var PROJ=[
 {t:"Sample: Completed project",im:"i9",c:"Completed",st:"Placeholder",d:"Example of a completed project entry.",c1:"#1B2547",c2:"#9097AD"},
 {t:"Sample: Partnership call",im:"i7",c:"Partnerships",st:"Placeholder",d:"Example of an open partnership opportunity.",c1:"#0A0E1C",c2:"#D7263D"},
 {t:"Sample: Featured investment",im:"i1",c:"Investments",st:"Placeholder",d:"Example of a featured investment entry.",c1:"#9097AD",c2:"#2A3870"}];
-var EV=[
-{t:"Sample event: Leadership summit",im:"i7",cat:"Conference",date:"Date to be confirmed",loc:"Location to be confirmed",sched:"Schedule to be confirmed",tk:["General","VIP"]},
-{t:"Sample event: Talent night",im:"i12",cat:"Entertainment",date:"Date to be confirmed",loc:"Location to be confirmed",sched:"Schedule to be confirmed",tk:["General","VIP"]}];
+var EV=[];
 
 /* wordmark + nav */
 var mk=$("#mark");"Frankgala Empire".split("").forEach(function(ch,i){var s=document.createElement("span");s.style.setProperty("--i",i);s.textContent=ch===" "?"\u00a0":ch;mk.appendChild(s)});
@@ -533,12 +531,21 @@ function renderPrograms(){
 }
 renderPrograms();
 
-/* events */
+/* Events from the published event library */
 var evl=$("#evlist");
-EV.forEach(function(e){var d=document.createElement("div");d.className="ev r";d.innerHTML="<div><span class='tag'>"+e.cat+"</span><p class='meta'>"+e.date+"</p></div><div><h3>"+e.t+"</h3><p class='meta'>"+e.loc+"</p></div><button class='btn ghost'>Details and tickets</button>";
- d.querySelector("button").onclick=function(){openDlg("<img class='dimg' alt='' src='"+IMG[e.im]+"'><span class='tag'>"+e.cat+" · Placeholder photo</span><h3 id='dt'>"+e.t+"</h3><p class='meta'>"+e.date+" · "+e.loc+"</p><p class='meta' style='margin-bottom:16px'>"+e.sched+"</p><form id='tf' novalidate><div><label for='tn'>Full name</label><input id='tn' autocomplete='name'></div><div><label for='te'>Email</label><input id='te' type='email' autocomplete='email'></div><div><label for='tt'>Ticket type</label><select id='tt'>"+e.tk.map(function(t){return"<option>"+t+" (price to be confirmed)</option>"}).join("")+"</select></div><div><label for='tq'>Quantity</label><input id='tq' type='number' min='1' max='10' value='1'></div><button class='btn' type='submit'>Continue to payment</button><div class='status' role='status'>Online payment is not connected yet. A provider such as Paystack or Flutterwave will be linked, and a booking is confirmed only after the provider’s verified webhook, never from this page.</div></form>");
- $("#tf").onsubmit=function(ev){ev.preventDefault();var s=$("#tf .status");s.className="status bad";s.textContent="No booking was made. Payment is not connected yet."}};evl.appendChild(d)});
-
+function renderPublicEvents(){
+ evl.innerHTML='<p class="meta">Loading announced events…</p>';
+ fetch(CMS_URL+"/rest/v1/events?select=id,title,slug,summary,description,image_path,start_at,end_at,location&status=eq.published&deleted_at=is.null&order=start_at.asc",{headers:{apikey:CMS_KEY,Authorization:"Bearer "+CMS_KEY}})
+ .then(function(r){if(!r.ok)throw Error("Events unavailable");return r.json()})
+ .then(function(items){evl.innerHTML="";if(!items.length){evl.innerHTML='<p class="meta">No events have been announced yet. Check back for updates.</p>';return}
+  items.forEach(function(ev){var card=document.createElement("article");card.className="ev r in";var meta=document.createElement("div"),tag=document.createElement("span"),date=document.createElement("p");tag.className="tag";tag.textContent="Frank Gala Empire";date.className="meta";date.textContent=ev.start_at?new Date(ev.start_at).toLocaleString():"Date to be announced";meta.append(tag,date);
+   var content=document.createElement("div"),h=document.createElement("h3"),summary=document.createElement("p"),loc=document.createElement("p");h.textContent=ev.title;summary.textContent=ev.summary||ev.description||"";loc.className="meta";loc.textContent=ev.location||"Location to be announced";content.append(h,summary,loc);
+   if(ev.image_path){var img=document.createElement("img");img.src=ev.image_path;img.alt=ev.title;img.loading="lazy";img.style.cssText="width:100%;max-width:220px;aspect-ratio:16/9;object-fit:cover;margin:12px 0";content.insertBefore(img,h)}
+   var link=document.createElement("a");link.className="btn ghost";link.href="#contact";link.textContent="Make an enquiry";card.append(meta,content,link);evl.appendChild(card)
+  });watch()
+ }).catch(function(){evl.innerHTML='<p class="meta">Events are temporarily unavailable. Please check again shortly.</p>'})
+}
+renderPublicEvents();
 /* logo cube */
 var lc=$("#lcube");for(var q=0;q<4;q++){var fc=document.createElement("i");fc.innerHTML='<img alt="" src="'+LOGO+'">';lc.appendChild(fc)}
 watch();
