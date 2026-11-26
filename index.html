@@ -279,7 +279,7 @@ function ui(){
 addEventListener("scroll",ui,{passive:true});ui();
 
 /* ===== WebGL empire ===== */
-var T=window.THREE,gl=$("#gl"),R,scene,cam,emb,mats=[],parts,pos,tgt,dst,cols,N=0,pil=[],HF=[.55,.9,1.15,.75,1,.65],t0=performance.now(),px=0,py=0,on=true,mobile=innerWidth<800;
+var T=window.THREE,gl=$("#gl"),R,scene,cam,emb,mats=[],parts,pos,tgt,dst,cols,N=0,pil=[],HF=[.55,.9,1.15,.75,1,.65,.95,.8,1.05,.7],t0=performance.now(),px=0,py=0,on=true,mobile=innerWidth<800;
 function initGL(){
  R=new T.WebGLRenderer({canvas:gl,antialias:!mobile,alpha:true,powerPreference:"high-performance"});
  R.setPixelRatio(Math.min(devicePixelRatio,mobile?1.5:2));R.outputEncoding=T.sRGBEncoding;
@@ -401,7 +401,7 @@ DIV.forEach(function(d,i){var b=document.createElement("button");b.className="fa
 function setR(){document.documentElement.style.setProperty("--R",innerWidth<600?"280px":"340px")}setR();addEventListener("resize",setR);
 function go(step){ang2+=step*36;idxD=(((idxD+step)%10)+10)%10;ring.style.transform="translateZ(calc(var(--R) * -1)) rotateY("+(-ang2)+"deg)";show(idxD)}
 function show(i){var d=DIV[i];panel.className="panel r in"+(d.img?" has":"");
- panel.innerHTML=(d.img?"<div><img class='pimg' alt='' src='"+IMG[d.img]+"'><p class='pcap'>Placeholder photo</p></div>":"")+"<div><h3>"+d.n+"</h3><p style='max-width:56ch;margin-bottom:16px'>"+d.d+"</p><ul>"+d.p.map(function(x){return"<li>"+x+"</li>"}).join("")+"</ul><div class='cta'><a class='btn' href='#contact' id='enq'>Make an Enquiry</a></div></div>";$("#enq").onclick=function(){buildForm($("#form"),d.svc,"c")}}
+ panel.innerHTML=(d.img?"<div><img class='pimg' alt='' src='"+IMG[d.img]+"'><p class='pcap'>Pillar image</p></div>":"")+"<div><h3>"+d.n+"</h3><p style='max-width:56ch;margin-bottom:16px'>"+d.d+"</p><ul>"+d.p.map(function(x){return"<li>"+x+"</li>"}).join("")+"</ul><div class='cta'><a class='btn' href='#contact' id='enq'>Make an Enquiry</a></div></div>";$("#enq").onclick=function(){buildForm($("#form"),d.svc,"c")}}
 ring.style.transform="translateZ(calc(var(--R) * -1))";show(0);
 
 /* ===== Published site content from Empire Control ===== */
