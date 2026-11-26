@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0a0e1c">
+<link rel="manifest" href="/empire.webmanifest">
+<link rel="icon" href="/empire-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/empire-icon.svg">
 <title>Empire Control | Frank Gala Empire</title>
 <style>
 :root{color-scheme:dark;--bg:#0a0e1c;--panel:#11182b;--panel2:#171f35;--line:#29324b;--gold:#d2b040;--cream:#f4f2ea;--muted:#9aa3b8;--green:#70d6a0;--red:#f18a8a}
@@ -282,4 +286,5 @@ $("assistant-chat-form").addEventListener("submit",async e=>{e.preventDefault();
 $("cancel").onclick=clearForm;$("refresh").onclick=loadPrograms;
 $("signout").onclick=async()=>{try{await fetch(SUPABASE_URL+"/auth/v1/logout",{method:"POST",headers:headers()})}finally{session=null;$("app").classList.add("hidden");$("login").classList.remove("hidden");$("password").value="";message("loginstatus","Signed out.","ok")}};
 </script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/empire-sw.js",{scope:"/"}).catch(err=>console.warn("App install support unavailable",err)));}</script>
 </body></html>
