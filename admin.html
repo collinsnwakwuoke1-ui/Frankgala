@@ -116,14 +116,14 @@ async function deleteProgram(p){if(!confirm('Delete "'+p.title+'"? This cannot b
 
 const sectionInfo={
  dashboard:{title:"Dashboard",heading:"Website overview",copy:"Use the sidebar to navigate the management areas. Programs are currently connected to the live website. The other content and design controls are being connected to the site content system."},
- homepage:{title:"Homepage & Hero",heading:"Homepage content",copy:"Manage the hero headline, supporting copy, calls to action, and homepage section visibility. This module is being connected to the editable content store."},
- pillars:{title:"10 Pillars",heading:"Pillar management",copy:"The ten pillar cards, names, descriptions, images, and display order will be managed here. The public site currently uses the existing 10-pillar immersive carousel."},
+ homepage:{title:"Homepage & Hero",heading:"Homepage content",copy:"Edit the homepage hero copy and calls to action. Saved published content is read by the public homepage."},
+ pillars:{title:"10 Pillars",heading:"Pillar management",copy:"Edit all ten pillar names, descriptions and image URLs. The live 3D carousel reads the saved pillar content."},
  programs:{title:"Programs & Events",heading:"Programs & Events",copy:"Create, edit, upload images, set status, and publish programs. Published programs appear on the public website."},
- media:{title:"Gallery & Media",heading:"Gallery & Media",copy:"Manage the site's gallery, project imagery, and media assets. Media-library controls are being connected."},
+ media:{title:"Gallery & Media",heading:"Gallery & Media",copy:"Manage gallery entries and image URLs. Saved gallery entries appear in the public website."},
  about:{title:"About & Vision",heading:"About & Vision",copy:"Edit the empire story, mission, vision, values, and company information. This content editor is being connected."},
  enquiries:{title:"Enquiries",heading:"Enquiries",copy:"Review and manage visitor enquiries. The public enquiry form currently requires a connected submission endpoint."},
  design:{title:"Visual Design",heading:"Visual design controls",copy:"Manage approved design tokens, typography, colors, motion preferences, and section layout while preserving the immersive experience. Design controls are being connected."},
- settings:{title:"Site Settings",heading:"Site settings",copy:"Manage site identity, SEO, social links, navigation, footer, and administrative settings. Settings controls are being connected."}
+ settings:{title:"Site Settings",heading:"Site settings",copy:"Edit the site title, SEO description, contact information and social profile links."}
 };
 const cmsSchema={
  homepage:[["eyebrow","Hero eyebrow"],["markText","Brand mark text"],["headline","Hero headline"],["lead","Hero supporting text"],["primaryCta","Primary button text"],["secondaryCta","Secondary button text"]],
@@ -137,7 +137,7 @@ const pillarDefaults=[
 ];
 function esc(v){return String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 async function getContent(key){const rows=await api("site_content?content_key=eq."+encodeURIComponent(key)+"&select=content_value,is_published");return rows?.[0]?.content_value||{}}
-function fieldHtml(key,label,value,type="text"){return '<div class="field"><label for="cms-'+key+'">'+esc(label)+'</label><'+(type==="textarea"?'textarea':'input')+' id="cms-'+key+'" '+(type==="text"?'type="text"':'')+' value="'+esc(value)+'" '+(type==="textarea"?'':'')+'>'+ (type==="textarea"?esc(value):'') +'</'+(type==="textarea"?'textarea':'input')+'></div>'}
+function fieldHtml(key,label,value,type="text"){const id="cms-"+key;return type==="textarea"?'<div class="field"><label for="'+id+'">'+esc(label)+'</label><textarea id="'+id+'">'+esc(value)+'</textarea></div>':'<div class="field"><label for="'+id+'">'+esc(label)+'</label><input id="'+id+'" type="text" value="'+esc(value)+'"></div>'}
 function renderContentEditor(key,data){
  const host=$("content-editor");host.innerHTML="";
  if(key==="dashboard"){host.innerHTML='<div class="actions"><button class="btn" type="button" id="dash-open-programs">Manage programs</button><button class="btn ghost" type="button" id="dash-open-pillars">Edit 10 pillars</button></div>'; $("dash-open-programs").onclick=()=>setSection("programs");$("dash-open-pillars").onclick=()=>setSection("pillars");return}
