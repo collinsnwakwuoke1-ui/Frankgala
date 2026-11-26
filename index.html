@@ -247,10 +247,10 @@ var DIV=[
 {n:"Frankgala Empire Football Academy",s:"Football",d:"Football development, training, talent identification, discipline and career pathways.",p:["Training","Talent identification","Career pathways"],svc:"Academy enquiry",img:"i4"},
 {n:"Frankgala School of Royalty",s:"Leadership",d:"Personal development, leadership, confidence, etiquette and professional training.",p:["Leadership","Etiquette","Professional training"],svc:"Training programme"},
 {n:"Investments and Contracts",s:"Enterprise",d:"Business investments, strategic partnerships, contracts and enterprise development.",p:["Strategic partnerships","Contracts","Enterprise development"],svc:"Investment",img:"i1"},
-{n:"E-commerce & Tech",s:"Digital",d:"Digital commerce, technology solutions and online business growth.",p:["Online shops and commerce","Technology solutions","Digital business growth"],svc:"General business enquiry",img:"i10"},
-{n:"Hospitality and Tourism",s:"Hospitality",d:"Hospitality experiences, tourism services and destination-focused opportunities.",p:["Hospitality services","Tourism experiences","Destination partnerships"],svc:"General business enquiry",img:"i11"},
-{n:"Service & Humanitarianism",s:"Community",d:"Community service, humanitarian initiatives and practical support for people and communities.",p:["Community outreach","Humanitarian initiatives","Impact partnerships"],svc:"Partnership",img:"i7"},
-{n:"Real Estate Consultancy",s:"Property",d:"Real estate advisory, property opportunities and support for informed property decisions.",p:["Property advisory","Real estate opportunities","Property investment guidance"],svc:"Investment",img:"i1"}];
+{n:"Information & Tech",s:"Digital",d:"Information technology, digital systems, AI learning and technology-enabled business growth.",p:["Information technology","Digital systems and AI","Technology learning and business solutions"],svc:"General business enquiry",img:"i13"},
+{n:"Real Estate Consultancy",s:"Property",d:"Real estate advisory, property opportunities and support for informed property decisions.",p:["Property advisory","Real estate opportunities","Property investment guidance"],svc:"Investment",img:"i14"},
+{n:"Hospitality and Tourism",s:"Hospitality",d:"Hospitality experiences, tourism services and destination-focused opportunities.",p:["Hospitality services","Tourism experiences","Destination partnerships"],svc:"General business enquiry",img:"i15"},
+{n:"Service & Humanitarianism",s:"Community",d:"Community service, humanitarian initiatives and practical support for people and communities.",p:["Community outreach","Humanitarian initiatives","Impact partnerships"],svc:"Partnership",img:"i16"}];
 var PROJ=[
 {t:"Sample: Leadership programme",im:"i10",c:"Current",st:"Placeholder",d:"Example of a current initiative entry.",c1:"#2A3870",c2:"#0A0E1C"},
 {t:"Sample: Talent showcase",im:"i11",c:"Upcoming",st:"Placeholder",d:"Example of an upcoming event entry.",c1:"#D2B040",c2:"#1B2547"},
@@ -428,6 +428,18 @@ function renderP(f){pgrid.innerHTML="";curP=-1;LP=PROJ.filter(function(p){return
  pgrid.scrollLeft=0;railFx()}
 cats.forEach(function(c){var b=document.createElement("button");b.className="chip";b.textContent=c;b.setAttribute("aria-pressed",c==="All");b.onclick=function(){chips.querySelectorAll(".chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});renderP(c)};chips.appendChild(b)});
 renderP("All");
+
+/* Uploaded pillar photos: fetched as compact base64 assets and applied in requested order. */
+Promise.all([
+ fetch("assets/pillar-01.webp.b64").then(function(r){if(!r.ok)throw Error("image 1");return r.text()}),
+ fetch("assets/pillar-02.webp.b64").then(function(r){if(!r.ok)throw Error("image 2");return r.text()}),
+ fetch("assets/pillar-03.webp.b64").then(function(r){if(!r.ok)throw Error("image 3");return r.text()}),
+ fetch("assets/pillar-04.webp.b64").then(function(r){if(!r.ok)throw Error("image 4");return r.text()})
+]).then(function(images){
+ ["i13","i14","i15","i16"].forEach(function(key,i){IMG[key]="data:image/webp;base64,"+images[i].trim()});
+ document.querySelectorAll(".face").forEach(function(face,i){var d=DIV[i];if(d&&d.img){face.classList.add("im");face.style.backgroundImage="linear-gradient(180deg,rgba(10,14,28,.2),rgba(10,14,28,.9)),url("+IMG[d.img]+")"}});
+ show(idxD);renderP("All");
+}).catch(function(){/* Keep the designed pillar cards usable if images cannot load. */});
 
 /* Programs table: add verified program entries here or connect this list to the admin database. */
 /* Programs are managed in Empire Control and loaded from Supabase */
