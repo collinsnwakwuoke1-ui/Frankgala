@@ -1,29 +1,56 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
 <title>Empire Control | Frank Gala Empire</title>
 <style>
-:root{color-scheme:dark;--bg:#0a0e1c;--panel:#11182b;--line:#29324b;--gold:#d2b040;--cream:#f4f2ea;--muted:#9aa3b8}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#202b4c 0,transparent 55%),var(--bg);color:var(--cream);font:16px/1.6 system-ui,-apple-system,sans-serif;display:grid;place-items:center;padding:24px}
-main{width:min(100%,440px);border:1px solid var(--line);background:rgba(17,24,43,.94);padding:clamp(24px,6vw,40px);border-radius:20px;box-shadow:0 24px 80px #0005}
-.mark{width:48px;height:48px;border:1px solid var(--gold);color:var(--gold);display:grid;place-items:center;font:700 24px Georgia;border-radius:50%;margin-bottom:28px}
-.kicker{color:var(--gold);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700}
-h1{font:500 clamp(32px,8vw,42px)/1.05 Georgia,serif;margin:10px 0 14px}p{color:var(--muted);margin:0 0 22px}
-.notice{border:1px solid #4a4126;background:#292515;color:#e4d49c;border-radius:12px;padding:14px;font-size:14px}
-a{display:inline-block;margin-top:22px;color:var(--cream);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:3px}
+:root{color-scheme:dark;--bg:#0a0e1c;--panel:#11182b;--panel2:#171f35;--line:#29324b;--gold:#d2b040;--cream:#f4f2ea;--muted:#9aa3b8;--green:#70d6a0;--red:#f18a8a}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 20% 0,#202b4c 0,transparent 45%),var(--bg);color:var(--cream);font:15px/1.55 system-ui,-apple-system,sans-serif;padding:24px}
+button,input,textarea,select{font:inherit}button,a{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #d2b040;outline-offset:3px}
+.wrap{width:min(1120px,100%);margin:0 auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}.brand{display:flex;gap:12px;align-items:center}.mark{width:44px;height:44px;border:1px solid var(--gold);color:var(--gold);display:grid;place-items:center;font:700 24px Georgia;border-radius:50%}.kicker{color:var(--gold);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}.top h1{font:500 28px/1.1 Georgia,serif;margin:4px 0}.muted{color:var(--muted)}.panel{border:1px solid var(--line);background:rgba(17,24,43,.94);border-radius:18px;padding:clamp(18px,3vw,28px);margin-bottom:18px}.login{max-width:440px;margin:8vh auto}.hidden{display:none!important}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}label{font-size:13px;color:#cbd1df}input,textarea,select{width:100%;border:1px solid var(--line);background:#0b1121;color:var(--cream);border-radius:10px;padding:12px 13px;min-height:46px}textarea{min-height:100px;resize:vertical}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.btn{border:1px solid var(--gold);background:var(--gold);color:#101321;border-radius:10px;padding:11px 16px;font-weight:700;min-height:44px}.btn.ghost{background:transparent;color:var(--cream);border-color:var(--line)}.btn.danger{border-color:#693c48;color:#ffb5bd;background:#301d28}.status{font-size:13px;min-height:24px;margin:10px 0;color:var(--muted)}.status.error{color:var(--red)}.status.ok{color:var(--green)}.headrow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.headrow h2{font:500 25px Georgia;margin:0}.programs{display:grid;gap:10px}.item{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:12px}.thumb{width:64px;height:64px;object-fit:cover;border-radius:8px;background:#0a0e1c}.item h3{margin:0 0 3px;font-size:16px}.item p{margin:0;color:var(--muted);font-size:13px}.itemactions{display:flex;gap:8px;flex-wrap:wrap}.itemactions button{min-height:38px;padding:7px 10px}.check{display:flex;align-items:center;gap:8px}.check input{width:20px;min-height:20px}.notice{border:1px solid #4a4126;background:#292515;color:#e4d49c;border-radius:12px;padding:13px;font-size:13px;margin-top:14px}.empty{padding:22px;text-align:center;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}
+@media(max-width:650px){body{padding:14px}.top{align-items:flex-start}.top h1{font-size:23px}.grid{grid-template-columns:1fr}.item{grid-template-columns:48px minmax(0,1fr)}.thumb{width:48px;height:48px}.itemactions{grid-column:1/-1}.headrow{align-items:flex-start}.headrow h2{font-size:22px}}
 </style>
 </head>
 <body>
-<main>
-<div class="mark" aria-hidden="true">F</div>
-<div class="kicker">Frank Gala Empire · Private</div>
-<h1>Empire<br>Control.</h1>
-<p>Private administration for the Empire’s events and media. This area is not available to public visitors.</p>
-<div class="notice" role="status">Secure administrator access is being configured. Login and event-management access will be enabled after the authorized admin account is confirmed.</div>
-<a href="/">← Return to the public website</a>
-</main>
-</body>
-</html>
+<div class="wrap">
+<header class="top"><div class="brand"><div class="mark">F</div><div><div class="kicker">Frank Gala Empire · Private</div><h1>Empire Control</h1></div></div><a href="/" class="muted">View site ↗</a></header>
+<section id="login" class="panel login"><div class="kicker">Administrator sign in</div><h2 style="font:500 30px Georgia;margin:8px 0">Manage programs</h2><p class="muted">Sign in with your authorized Empire administrator account.</p>
+<form id="loginform"><div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" required></div><div class="field" style="margin-top:12px"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div><div class="actions"><button class="btn" type="submit">Sign in</button></div></form><div id="loginstatus" class="status" role="status"></div>
+<div class="notice">Access is restricted to accounts with the Empire administrator role. The site does not create or grant administrator accounts from this page.</div></section>
+<div id="app" class="hidden">
+<section class="panel"><div class="headrow"><div><div class="kicker">Program management</div><h2 id="formtitle">Add a program</h2></div><button id="signout" class="btn ghost">Sign out</button></div>
+<form id="programform"><input id="programid" type="hidden"><div class="grid">
+<div class="field"><label for="title">Program name *</label><input id="title" required maxlength="160"></div>
+<div class="field"><label for="division">Division / pillar</label><input id="division" maxlength="120" placeholder="e.g. New Africa International"></div>
+<div class="field"><label for="schedule">Schedule / date</label><input id="schedule" maxlength="160" placeholder="Date and time or recurring schedule"></div>
+<div class="field"><label for="venue">Venue</label><input id="venue" maxlength="160" placeholder="Venue or online"></div>
+<div class="field"><label for="status">Program status</label><select id="status"><option>UPCOMING</option><option>LIVE</option><option>ONGOING</option><option>COMPLETED</option></select></div>
+<div class="field"><label for="url">Program / livestream link</label><input id="url" type="url" placeholder="https://"></div>
+<div class="field full"><label for="description">Description</label><textarea id="description" maxlength="3000"></textarea></div>
+<div class="field"><label for="image">Program image (JPG, PNG, WebP; max 10 MB)</label><input id="image" type="file" accept="image/jpeg,image/png,image/webp"></div>
+<div class="field"><label for="order">Display order</label><input id="order" type="number" min="0" step="1" value="0"></div>
+<div class="field full"><label class="check"><input id="published" type="checkbox"> Publish on public website</label></div>
+</div><div class="actions"><button class="btn" id="save" type="submit">Save program</button><button class="btn ghost" id="cancel" type="button">Clear form</button></div></form><div id="savestatus" class="status" role="status"></div></section>
+<section class="panel"><div class="headrow"><div><div class="kicker">Content library</div><h2>Programs</h2></div><button id="refresh" class="btn ghost">Refresh</button></div><div id="programs" class="programs"><div class="empty">Loading programs…</div></div></section>
+</div>
+</div>
+<script>
+const SUPABASE_URL="https://bwgrvtrhnmllovafduyn.supabase.co";
+const SUPABASE_KEY="sb_publishable_6TnYFMOfZ1g3euFs-Wv5Zw_P81Gi6Fa";
+let session=null,programs=[];
+const $=id=>document.getElementById(id);
+function message(id,text,type=""){const el=$(id);el.textContent=text;el.className="status "+type}
+function headers(token=session?.access_token){return{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+(token||SUPABASE_KEY),"Content-Type":"application/json"}}
+async function api(path,opts={}){const res=await fetch(SUPABASE_URL+"/rest/v1/"+path,{...opts,headers:{...headers(),...(opts.headers||{})}});const txt=await res.text();if(!res.ok)throw Error(txt||"Request failed ("+res.status+")");return txt?JSON.parse(txt):null}
+function clearForm(){ $("programform").reset();$("programid").value="";$("order").value="0";$("formtitle").textContent="Add a program";$("save").textContent="Save program";$("image").value=""}
+$("loginform").addEventListener("submit",async e=>{e.preventDefault();message("loginstatus","Signing in…");try{const res=await fetch(SUPABASE_URL+"/auth/v1/token?grant_type=password",{method:"POST",headers:{"apikey":SUPABASE_KEY,"Content-Type":"application/json"},body:JSON.stringify({email:$("email").value.trim(),password:$("password").value})});const data=await res.json();if(!res.ok)throw Error(data.msg||data.message||data.error_description||"Sign in failed");session=data;if(data.user?.app_metadata?.role!=="empire_admin") {await fetch(SUPABASE_URL+"/auth/v1/logout",{method:"POST",headers:headers(data.access_token)});session=null;throw Error("This account is signed in but does not have the Empire administrator role.");}$("login").classList.add("hidden");$("app").classList.remove("hidden");await loadPrograms();}catch(err){message("loginstatus",err.message,"error")}});
+async function loadPrograms(){ $("programs").innerHTML='<div class="empty">Loading…</div>';try{programs=await api("programs?select=*&order=sort_order.asc,created_at.desc");renderList();message("savestatus","Program list updated.","ok")}catch(err){$("programs").innerHTML='<div class="empty">Could not load programs.</div>';message("savestatus",err.message,"error")}}
+function renderList(){const host=$("programs");if(!programs.length){host.innerHTML='<div class="empty">No programs yet. Add your first program above.</div>';return}host.innerHTML="";programs.forEach(p=>{const item=document.createElement("article");item.className="item";const img=document.createElement("img");img.className="thumb";img.alt="";img.src=p.image_path||"";const body=document.createElement("div"),h=document.createElement("h3"),meta=document.createElement("p");h.textContent=p.title;meta.textContent=[p.division,p.schedule,p.status,p.is_published?"Published":"Draft"].filter(Boolean).join(" · ");body.append(h,meta);const actions=document.createElement("div");actions.className="itemactions";const edit=document.createElement("button");edit.className="btn ghost";edit.textContent="Edit";edit.onclick=()=>editProgram(p);const del=document.createElement("button");del.className="btn danger";del.textContent="Delete";del.onclick=()=>deleteProgram(p);actions.append(edit,del);item.append(img,body,actions);host.append(item)})}
+function editProgram(p){$("programid").value=p.id;$("title").value=p.title||"";$("division").value=p.division||"";$("schedule").value=p.schedule||"";$("venue").value=p.venue||"";$("status").value=p.status||"UPCOMING";$("url").value=p.access_url||"";$("description").value=p.description||"";$("order").value=p.sort_order||0;$("published").checked=!!p.is_published;$("formtitle").textContent="Edit program";$("save").textContent="Update program";$("image").value="";window.scrollTo({top:0,behavior:"smooth"})}
+async function uploadImage(file){if(!file)return null;if(file.size>10*1024*1024)throw Error("Image must be 10 MB or smaller.");if(!["image/jpeg","image/png","image/webp"].includes(file.type))throw Error("Use a JPG, PNG, or WebP image.");const ext=file.type==="image/jpeg"?"jpg":file.type.split("/")[1];const path=crypto.randomUUID()+"."+ext;const res=await fetch(SUPABASE_URL+"/storage/v1/object/program-images/"+path,{method:"POST",headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+session.access_token,"Content-Type":file.type,"x-upsert":"false"},body:file});const data=await res.json().catch(()=>({}));if(!res.ok)throw Error(data.message||"Image upload failed");return SUPABASE_URL+"/storage/v1/object/public/program-images/"+path}
+$("programform").addEventListener("submit",async e=>{e.preventDefault();const btn=$("save");btn.disabled=true;message("savestatus","Saving program…");try{const id=$("programid").value||crypto.randomUUID();let image_path=programs.find(p=>p.id===id)?.image_path||null;const file=$("image").files[0];if(file)image_path=await uploadImage(file);const record={id,title:$("title").value.trim(),division:$("division").value.trim(),schedule:$("schedule").value.trim(),venue:$("venue").value.trim(),status:$("status").value,access_url:$("url").value.trim(),description:$("description").value.trim(),image_path,is_published:$("published").checked,sort_order:Math.max(0,Number($("order").value)||0),updated_at:new Date().toISOString()};await api("programs?on_conflict=id",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(record)});clearForm();await loadPrograms();message("savestatus","Program saved.","ok")}catch(err){message("savestatus",err.message,"error")}finally{btn.disabled=false}});
+async function deleteProgram(p){if(!confirm('Delete "'+p.title+'"? This cannot be undone.'))return;try{await api("programs?id=eq."+encodeURIComponent(p.id),{method:"DELETE"});await loadPrograms()}catch(err){message("savestatus",err.message,"error")}}
+$("cancel").onclick=clearForm;$("refresh").onclick=loadPrograms;
+$("signout").onclick=async()=>{try{await fetch(SUPABASE_URL+"/auth/v1/logout",{method:"POST",headers:headers()})}finally{session=null;$("app").classList.add("hidden");$("login").classList.remove("hidden");$("password").value="";message("loginstatus","Signed out.","ok")}};
+</script>
+</body></html>
