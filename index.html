@@ -377,7 +377,14 @@ function submit(el,src){
  var st=el.querySelector(".status"),btn=el.querySelector("button[type=submit]");
  if(bad){first.focus();return}
  function show(t,b){st.textContent=t;st.className="status"+(b?" bad":"")}
- if(!ENDPOINT){show("Not sent. The enquiry service is not connected yet, so nothing was submitted. Connect a backend or verified email service and set ENDPOINT in this file.",true);return}
+ if(!ENDPOINT){
+  btn.disabled=true;show("Sending securely…");
+  var messageText=[o.details,o.budget?"Budget: "+o.budget:"",o.date?"Preferred date: "+o.date:""].filter(Boolean).join("\\n\\n");
+  fetch(CMS_URL+"/rest/v1/site_enquiries",{method:"POST",headers:{"apikey":CMS_KEY,"Authorization":"Bearer "+CMS_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},body:JSON.stringify({name:o.name.trim(),email:o.email.trim(),phone:o.phone.trim(),subject:o.service||"General enquiry",message:messageText})})
+  .then(function(r){if(!r.ok)throw Error("Request rejected");show("Enquiry received. The Empire team can review it in Empire Control.");el.reset()})
+  .catch(function(){show("Your enquiry was not sent. Please try again later.",true)})
+  .then(function(){btn.disabled=false});return
+}
  btn.disabled=true;show("Sending…");
  fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(o)}).then(function(r){if(!r.ok)throw 0;show("Received. Our team will reply by email.");el.reset()}).catch(function(){show("Something went wrong and your enquiry was not sent. Please try again.",true)}).then(function(){btn.disabled=false});
 }
@@ -427,7 +434,7 @@ function cmsApplyPillars(data){
  show(idxD);
 }
 function cmsApplyAbout(d){
- cmsSetText(".about .wrap > h2.big",d.story);
+ cmsSetText(".about .wrap > p.r",d.story);
  cmsSetText(".about .vals > div:nth-child(1) p",d.vision);
  cmsSetText(".about .vals > div:nth-child(2) p",d.mission);
  cmsSetText(".about .vals > div:nth-child(3) p",d.values);
