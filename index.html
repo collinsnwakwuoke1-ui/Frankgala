@@ -396,6 +396,67 @@ function go(step){ang2+=step*36;idxD=(((idxD+step)%10)+10)%10;ring.style.transfo
 function show(i){var d=DIV[i];panel.className="panel r in"+(d.img?" has":"");
  panel.innerHTML=(d.img?"<div><img class='pimg' alt='' src='"+IMG[d.img]+"'><p class='pcap'>Placeholder photo</p></div>":"")+"<div><h3>"+d.n+"</h3><p style='max-width:56ch;margin-bottom:16px'>"+d.d+"</p><ul>"+d.p.map(function(x){return"<li>"+x+"</li>"}).join("")+"</ul><div class='cta'><a class='btn' href='#contact' id='enq'>Make an Enquiry</a></div></div>";$("#enq").onclick=function(){buildForm($("#form"),d.svc,"c")}}
 ring.style.transform="translateZ(calc(var(--R) * -1))";show(0);
+
+/* ===== Published site content from Empire Control ===== */
+var CMS_URL="https://bwgrvtrhnmllovafduyn.supabase.co";
+var CMS_KEY="sb_publishable_6TnYFMOfZ1g3euFs-Wv5Zw";
+function cmsText(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function cmsImageUrl(v){if(typeof v!=="string")return"";v=v.trim();return /^(https?:\/\/|\/assets\/)[^\s"'<>]+$/i.test(v)?v:""}
+function cmsSetText(sel,value){var el=document.querySelector(sel);if(el&&typeof value==="string"&&value.trim())el.textContent=value}
+function cmsSetLinkText(sel,value){var el=document.querySelector(sel);if(el&&typeof value==="string"&&value.trim())el.textContent=value}
+function cmsApplyDesign(d){
+ var root=document.documentElement,vars={gold:"--gold",navy:"--navy",ink:"--ink",ivory:"--ivory"};
+ Object.keys(vars).forEach(function(k){var v=d[k];if(typeof v==="string"&&/^#[0-9a-f]{6}$/i.test(v))root.style.setProperty(vars[k],v)});
+ if(typeof d.navy==="string"&&/^#[0-9a-f]{6}$/i.test(d.navy))root.style.setProperty("--navy2",d.navy);
+ [["serif","--serif"],["sans","--sans"]].forEach(function(pair){var v=d[pair[0]];if(typeof v==="string"&&/^[a-zA-Z0-9 ,"'()-]{1,80}$/.test(v))root.style.setProperty(pair[1],v)});
+}
+function cmsApplyHomepage(d){
+ cmsSetText(".hero .eyebrow",d.eyebrow);cmsSetText(".hero h1",d.headline);cmsSetText(".hero .lead",d.lead);
+ var mk=$("#mark");if(mk&&typeof d.markText==="string"&&d.markText.trim()){mk.textContent="";d.markText.split("").forEach(function(ch,i){var sp=document.createElement("span");sp.style.setProperty("--i",i);sp.textContent=ch===" "?"\u00a0":ch;mk.appendChild(sp)});mk.setAttribute("aria-label",d.markText)}
+ cmsSetLinkText(".hero .cta a:first-child",d.primaryCta);cmsSetLinkText(".hero .cta a:last-child",d.secondaryCta);
+}
+function cmsApplyPillars(data){
+ if(!Array.isArray(data.items))return;
+ data.items.slice(0,10).forEach(function(item,i){
+  if(!DIV[i]||!item)return;
+  if(typeof item.name==="string"&&item.name.trim())DIV[i].n=item.name.trim().slice(0,120);
+  if(typeof item.description==="string")DIV[i].d=item.description.slice(0,1500);
+  var src=cmsImageUrl(item.image);if(src){var key="cmsPillar"+i;IMG[key]=src;DIV[i].img=key}
+  var face=ring.children[i];if(face){face.innerHTML="<small>"+cmsText(DIV[i].s.toUpperCase())+"</small><b>"+cmsText(DIV[i].n)+"</b><span>Tap to explore</span>";if(DIV[i].img){face.classList.add("im");face.style.backgroundImage="linear-gradient(180deg,rgba(10,14,28,.2),rgba(10,14,28,.9)),url("+JSON.stringify(IMG[DIV[i].img])+")"}}
+ });
+ show(idxD);
+}
+function cmsApplyAbout(d){
+ cmsSetText(".about .wrap > h2.big",d.story);
+ cmsSetText(".about .vals > div:nth-child(1) p",d.vision);
+ cmsSetText(".about .vals > div:nth-child(2) p",d.mission);
+ cmsSetText(".about .vals > div:nth-child(3) p",d.values);
+ cmsSetText(".about .mile > p",d.milestones);
+}
+function cmsApplySettings(d){
+ if(typeof d.siteTitle==="string"&&d.siteTitle.trim())document.title=d.siteTitle;
+ if(typeof d.description==="string"&&d.description.trim()){var m=document.querySelector('meta[name="description"]');if(m)m.content=d.description}
+ var foot=document.querySelector("footer .wrap");if(foot&&d.siteTitle)foot.textContent="© "+d.siteTitle+". All rights reserved.";
+ var contact=document.querySelector("#contact .meta");if(contact){contact.textContent="";[["Email",d.contactEmail],["Phone",d.contactPhone],["Address",d.address]].forEach(function(pair){if(pair[1]){var line=document.createElement("p");line.textContent=pair[0]+": "+pair[1];contact.appendChild(line)}});[["Instagram",d.instagram],["Facebook",d.facebook],["LinkedIn",d.linkedin]].forEach(function(pair){var u=cmsImageUrl(pair[1]);if(u){var a=document.createElement("a");a.href=u;a.target="_blank";a.rel="noopener noreferrer";a.textContent=pair[0];a.style.marginRight="14px";contact.appendChild(a)}})}
+}
+function cmsApplyGallery(data){
+ if(typeof data.gallery!=="string"||!data.gallery.trim())return;
+ var rows=data.gallery.split(/\r?\n/).map(function(line){return line.split("|").map(function(x){return x.trim()})}).filter(function(r){return r.length>=2&&r[0]&&cmsImageUrl(r[1])});
+ if(!rows.length)return;
+ var section=document.createElement("section");section.className="sec dark2";section.id="empire-gallery";var wrap=document.createElement("div");wrap.className="wrap";var eyebrow=document.createElement("span");eyebrow.className="eyebrow";eyebrow.textContent="Gallery & Media";var h=document.createElement("h2");h.className="big";h.textContent="Moments from the Empire";var grid=document.createElement("div");grid.style.cssText="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:24px";
+ rows.slice(0,40).forEach(function(row){var card=document.createElement("figure");card.style.cssText="margin:0;background:var(--navy);border:1px solid rgba(210,176,64,.25);padding:8px";var img=document.createElement("img");img.src=cmsImageUrl(row[1]);img.alt=row[2]||row[0];img.loading="lazy";img.style.cssText="width:100%;aspect-ratio:4/3;object-fit:cover;display:block";var cap=document.createElement("figcaption");cap.textContent=row[0];cap.style.cssText="padding:10px 4px;color:var(--ivory)";card.append(img,cap);grid.appendChild(card)});
+ wrap.append(eyebrow,h,grid);section.appendChild(wrap);var about=document.querySelector("#about");if(about)about.parentNode.insertBefore(section,about);
+}
+function cmsLoadPublished(){
+ fetch(CMS_URL+"/rest/v1/site_content?content_key=in.(homepage,pillars,about,design,settings,media)&select=content_key,content_value",{headers:{apikey:CMS_KEY,Authorization:"Bearer "+CMS_KEY}})
+ .then(function(r){if(!r.ok)throw Error("Content fetch failed");return r.json()})
+ .then(function(rows){var data={};rows.forEach(function(row){data[row.content_key]=row.content_value||{}});
+  cmsApplyDesign(data.design||{});cmsApplyHomepage(data.homepage||{});cmsApplyPillars(data.pillars||{});cmsApplyAbout(data.about||{});cmsApplySettings(data.settings||{});cmsApplyGallery(data.media||{});
+ })
+ .catch(function(){/* The original designed content remains as a graceful fallback. */});
+}
+cmsLoadPublished();
+
 $("#prev").onclick=function(){go(-1)};$("#next").onclick=function(){go(1)};
 var sx=null;$("#car").addEventListener("pointerdown",function(e){sx=e.clientX});
 addEventListener("pointerup",function(e){if(sx!==null){var dx=e.clientX-sx;if(Math.abs(dx)>50)go(dx<0?1:-1);sx=null}});
